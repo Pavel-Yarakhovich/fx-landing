@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { FiExternalLink } from "react-icons/fi";
 
-const activeRobot = React.forwardRef(({ robot }, ref) => {
+const ActiveRobot = React.forwardRef(({ robot }, ref) => {
   return (
     <Box w="100%" p={2} mb="30px" ref={ref}>
       <Flex
@@ -167,6 +167,6 @@ const activeRobot = React.forwardRef(({ robot }, ref) => {
   );
 });
 
-activeRobot.displayName = 'Active Robot';
+ActiveRobot.displayName = 'Active Robot';
 
-export default activeRobot;
+export default ActiveRobot;

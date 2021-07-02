@@ -1,6 +1,6 @@
 import { Box, Image, Badge } from "@chakra-ui/react";
 
-function robotItem({ robot, handleClick }) {
+function RobotItem({ robot, handleClick }) {
   return (
     <Box
       w={["100%", "50%", "33%", "25%"]}
@@ -60,4 +60,4 @@ function robotItem({ robot, handleClick }) {
   );
 }
 
-export default robotItem;
+export default RobotItem;

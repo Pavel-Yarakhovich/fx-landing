@@ -7,7 +7,7 @@ const SEC = 1000,
   HOUR = MIN * 60,
   DAY = HOUR * 24;
 
-function timer() {
+function Timer() {
   const [distance, setDistance] = React.useState(0);
 
   React.useEffect(() => {
@@ -48,4 +48,4 @@ function timer() {
   );
 }
 
-export default timer;
+export default Timer;

@@ -106,7 +106,7 @@ const robots = [
   },
 ];
 
-function robotDesc() {
+function RobotDesc() {
   const [activeRobot, setActiveRobot] = React.useState(robots[0]);
   const activeRobotRef = React.useRef(null);
 
@@ -141,4 +141,4 @@ function robotDesc() {
   );
 }
 
-export default robotDesc;
+export default RobotDesc;

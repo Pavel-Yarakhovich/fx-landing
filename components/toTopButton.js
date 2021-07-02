@@ -1,7 +1,7 @@
 import { Button, Fade } from "@chakra-ui/react";
 import { BiArrowToTop } from "react-icons/bi";
 
-function toTopButton({ show, handleClick }) {
+function ToTopButton({ show, handleClick }) {
   return (
     <Fade in={show}>
       <Button
@@ -21,4 +21,4 @@ function toTopButton({ show, handleClick }) {
   );
 }
 
-export default toTopButton;
+export default ToTopButton;
