@@ -11,13 +11,24 @@ async function handler(req, res) {
     );
     const db = client.db();
 
-    const meetupsCollection = db.collection('users');
+    const usersCollection = db.collection("users");
 
-    const result = await meetupsCollection.insertOne(data);
+    const userExists = await usersCollection.findOne({ email: data.email });
 
-    client.close();
+    if (userExists) {
+      client.close();
+      res
+        .status(409)
+        .json({
+          message: `Пользователь с email "${data.email}" уже существует`, error: true,
+        });
+    } else {
+      const result = await usersCollection.insertOne(data);
 
-    res.status(201).json({ message: 'Регистрация прошла успешно', result });
+      client.close();
+
+      res.status(201).json({ message: "Регистрация прошла успешно", result });
+    }
   }
 }
 

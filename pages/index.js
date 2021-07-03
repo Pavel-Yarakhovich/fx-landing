@@ -1,6 +1,15 @@
 import React from "react";
 import Head from "next/head";
-import { Container, Text, Stack, Flex, Box, Button } from "@chakra-ui/react";
+import {
+  Container,
+  Text,
+  Stack,
+  Flex,
+  Box,
+  Button,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 import { FaArrowCircleDown } from "react-icons/fa";
 import Steps from "../components/steps";
 import ContactForm from "../components/form";
@@ -14,6 +23,8 @@ import { useInView } from "react-intersection-observer";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const [addUserResponse, setAddUserResponse] = React.useState(null);
+
   const headerRef = React.useRef(null);
   const { ref, inView } = useInView({
     threshold: 0.3,
@@ -26,7 +37,7 @@ export default function Home() {
       headerRef.current = node;
       ref(node);
     },
-    [ref],
+    [ref]
   );
 
   const secondScreenRef = React.useRef(null);
@@ -45,6 +56,7 @@ export default function Home() {
   }, [showScreen]);
 
   async function addUserHandler(userData) {
+    setAddUserResponse(null);
     const response = await fetch("/api/add-user", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -55,13 +67,17 @@ export default function Home() {
 
     const data = await response.json();
     console.log(data);
+    setAddUserResponse(data);
   }
 
   return (
     <div>
       <Head>
         <title>Уникальная возможность!</title>
-        <meta name="description" content="Получи 10 торговых роботов общей стоимостью 20000$. БЕСПЛАТНО!" />
+        <meta
+          name="description"
+          content="Получи 10 торговых роботов общей стоимостью 20000$. БЕСПЛАТНО!"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -92,11 +108,10 @@ export default function Home() {
         <Container
           maxW="container.xl"
           p={4}
-          // bgGradient="linear(to-br, white, #f7fff9, white)"
           bg="left top url(/images/bg.svg) no-repeat , right 100% / 60% url(/images/bg.svg) no-repeat "
         >
           <Box
-            minHeight="100vh"
+            minHeight="calc(100vh - 70px)"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -137,7 +152,17 @@ export default function Home() {
                 <Steps />
               </Box>
               <Box w={["100%", "50%", null, "30%"]}>
-                <ContactForm addUser={addUserHandler}/>
+                {addUserResponse && (
+                  <Alert
+                    status={addUserResponse.error ? "error" : "success"}
+                    borderRadius="12px"
+                    mb="12px"
+                  >
+                    <AlertIcon />
+                    {addUserResponse.message}
+                  </Alert>
+                )}
+                <ContactForm addUser={addUserHandler} />
               </Box>
             </Flex>
             <Button
@@ -237,7 +262,7 @@ export default function Home() {
               <Steps />
             </Box>
             <Box w={["100%", "50%", null, "30%"]}>
-              <ContactForm addUser={addUserHandler}/>
+              <ContactForm addUser={addUserHandler} />
             </Box>
           </Flex>
         </Container>
