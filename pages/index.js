@@ -1,6 +1,5 @@
 import React from "react";
 import Head from "next/head";
-import Image from "next/image";
 import { Container, Text, Stack, Flex, Box, Button } from "@chakra-ui/react";
 import { FaArrowCircleDown } from "react-icons/fa";
 import Steps from "../components/steps";
@@ -44,6 +43,19 @@ export default function Home() {
   const scrollToTop = React.useCallback(() => {
     showScreen(headerRef);
   }, [showScreen]);
+
+  async function addUserHandler(userData) {
+    const response = await fetch("/api/add-user", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    console.log(data);
+  }
 
   return (
     <div>
@@ -125,7 +137,7 @@ export default function Home() {
                 <Steps />
               </Box>
               <Box w={["100%", "50%", null, "30%"]}>
-                <ContactForm />
+                <ContactForm addUser={addUserHandler}/>
               </Box>
             </Flex>
             <Button
@@ -225,7 +237,7 @@ export default function Home() {
               <Steps />
             </Box>
             <Box w={["100%", "50%", null, "30%"]}>
-              <ContactForm />
+              <ContactForm addUser={addUserHandler}/>
             </Box>
           </Flex>
         </Container>

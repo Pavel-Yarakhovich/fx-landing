@@ -1,6 +1,56 @@
-import { Stack, Input, FormControl, FormLabel, Button } from "@chakra-ui/react";
+import React from "react";
+import { Stack, Input, FormControl, FormLabel, Button, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
-function ContactForm() {
+const initUser = { name: "", email: "", telegram: "" };
+const EMAIL_VALIDATOR = /\S+@\S+\.\S+/;
+
+function ContactForm({ addUser }) {
+  const [isRegistering, setRegistering] = React.useState(false);
+  const [newUser, setNewUser] = React.useState(initUser);
+  const [errors, setErrors] = React.useState(initUser);
+
+  const changeUserData = React.useCallback(({ target: { name, value } }) => {
+    setErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
+    setNewUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
+
+  const validateForm = React.useCallback(() => {
+    let isValid = true;
+    setErrors(initUser);
+    const errors = { ...initUser };
+    Object.entries(newUser).forEach(([key, value]) => {
+      if (!value) {
+        errors[key] = 'Поле не может быть пустым.';
+        isValid = false;
+      }
+      if (key === 'email') {
+        if (value && !EMAIL_VALIDATOR.test(value)) {
+          errors[key] = 'Неверный формат email.';
+          isValid = false;
+        }
+      }
+    });
+    setErrors(errors);
+    return isValid;
+  }, [newUser]);
+
+  const register = React.useCallback(async () => {
+    if (!validateForm()) return;
+    setRegistering(true);
+    console.log('NEW ', newUser);
+    await addUser(newUser);
+    setNewUser(initUser);
+    setErrors(initUser);
+    setRegistering(false);
+  }, [newUser, addUser, validateForm]);
+
   return (
     <Stack
       spacing={3}
@@ -12,24 +62,50 @@ function ContactForm() {
     >
       <FormControl id="name" isRequired>
         <FormLabel>Имя</FormLabel>
-        <Input placeholder="Имя" />
+        {errors.name && <Text color="red" fontSize="xs">{errors.name}</Text>}
+        <Input
+          placeholder="Имя"
+          name="name"
+          value={newUser.name}
+          onChange={changeUserData}
+          isInvalid={errors.name}
+        />
       </FormControl>
       <FormControl id="email" isRequired>
         <FormLabel>Email</FormLabel>
-        <Input placeholder="Email" type="email" />
+        {errors.email && <Text color="red" fontSize="xs">{errors.email}</Text>}
+        <Input
+          placeholder="Email"
+          type="email"
+          name="email"
+          value={newUser.email}
+          onChange={changeUserData}
+          isInvalid={errors.email}
+        />
       </FormControl>
       <FormControl id="telegram" isRequired>
         <FormLabel>Telegram</FormLabel>
-        <Input placeholder="Telegram" />
+        {errors.telegram && <Text color="red" fontSize="xs">{errors.telegram}</Text>}
+        <Input
+          placeholder="Telegram"
+          name="telegram"
+          value={newUser.telegram}
+          onChange={changeUserData}
+          isInvalid={errors.telegram}
+        />
       </FormControl>
       <Button
         colorScheme="green"
         alignSelf="center"
         w="100%"
+        onClick={register}
+        isLoading={isRegistering}
       >
         Регистрация
       </Button>
-      u
+      <Button colorScheme="teal" alignSelf="center" w="100%">
+        <Link href="/admin">Go to ADMIN</Link>
+      </Button>
     </Stack>
   );
 }
