@@ -1,9 +1,19 @@
+@font-face {
+  font-family: 'Futura';
+  src: url('/fonts/Futura/FuturaPT-Medium.ttf');
+}
+@font-face {
+  font-family: 'FuturaLight';
+  src: url('/fonts/Futura/FuturaPT-Light.ttf');
+}
+
 html,
 body {
+  position: relative;
   padding: 0;
   margin: 0;
-  font-family: Raleway, sans-serif;
-  background-image: url('/images/bg_main.svg') no-repeat center;
+  font-family: Futura, sans-serif;
+  background: center 100% url(/images/bg.jpeg) no-repeat center;
 }
 
 a {
@@ -14,9 +24,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-/* @keyframes bg {
-  0% {},
-  50% {},
-  100% {},
-} */

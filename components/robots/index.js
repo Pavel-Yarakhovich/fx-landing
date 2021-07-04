@@ -25,7 +25,7 @@ function RobotsList() {
           (подробное описание ниже):
         </Text>
       </Stack>
-      <List textAlign="center">
+      <List textAlign="center" fontFamily="FuturaLight" fontSize="xl">
         {ROBOTS.map((robot, idx) => (
           <ListItem key={idx}>
             <ListIcon as={MdCheckCircle} color="green.500" />

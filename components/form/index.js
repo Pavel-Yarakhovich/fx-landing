@@ -39,7 +39,7 @@ function ContactForm({ addUser }) {
     setErrors(initUser);
     const errors = { ...initUser };
     Object.entries(newUser).forEach(([key, value]) => {
-      if (!value) {
+      if (!value && key !== "telegram") {
         errors[key] = "Поле не может быть пустым.";
         isValid = false;
       }
@@ -58,7 +58,11 @@ function ContactForm({ addUser }) {
     if (!validateForm()) return;
     setRegistering(true);
     console.log("NEW ", newUser);
-    await addUser(newUser);
+    const reqBody = { ...newUser };
+    if (!newUser.telegram) {
+      reqBody.telegram = 'Не указан';
+    }
+    await addUser(reqBody);
     setNewUser(initUser);
     setErrors(initUser);
     setRegistering(false);
@@ -104,7 +108,7 @@ function ContactForm({ addUser }) {
           isInvalid={errors.email}
         />
       </FormControl>
-      <FormControl id="telegram" isRequired>
+      <FormControl id="telegram">
         <FormLabel>Telegram</FormLabel>
         {errors.telegram && (
           <Text color="red" fontSize="xs">
