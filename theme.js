@@ -1,8 +1,8 @@
 import { extendTheme } from "@chakra-ui/react";
 const theme = extendTheme({
   fonts: {
-    heading: "Raleway",
-    body: "Raleway",
+    heading: "Futura",
+    body: "Futura",
   },
 });
 export default theme;

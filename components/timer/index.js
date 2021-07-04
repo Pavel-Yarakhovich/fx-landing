@@ -1,20 +1,20 @@
 import React from "react";
 import { HStack, Box, Text } from "@chakra-ui/react";
 
-const DUE_DATE = "Sep 30, 2021 00:00:00";
 const SEC = 1000,
   MIN = SEC * 60,
   HOUR = MIN * 60,
   DAY = HOUR * 24;
+// 3 hours before now
+const DUE_DATE = new Date().getTime() + 3 * 60 * 60 * 1000 ;
 
 function Timer() {
   const [distance, setDistance] = React.useState(0);
 
   React.useEffect(() => {
     const x = setInterval(() => {
-      const countDown = new Date(DUE_DATE).getTime();
       const now = new Date().getTime();
-      setDistance(countDown - now);
+      setDistance(DUE_DATE - now);
     }, SEC);
     return () => clearInterval(x);
   }, [distance]);

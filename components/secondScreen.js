@@ -3,7 +3,7 @@ import { Container, Flex, Box, Button } from "@chakra-ui/react";
 import { FaArrowCircleDown } from "react-icons/fa";
 
 import Offer from "./list";
-import RobotsList from "./list";
+import RobotsList from "./robots";
 
 const SecondScreen = React.forwardRef(({ handleNextScreen }, ref) => {
   return (

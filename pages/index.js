@@ -72,7 +72,7 @@ export default function Home() {
       <header className={styles.header} ref={setRefs}>
         <Expiration />
       </header>
-
+      <div className={styles.underlay}/>
       <main className={styles.main}>
         <FirstScreen
           addUserHandler={addUserHandler}

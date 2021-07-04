@@ -17,7 +17,7 @@ function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
     <Container
       maxW="container.xl"
       p={4}
-      bg="left top url(/images/bg.svg) no-repeat , right 100% / 60% url(/images/bg.svg) no-repeat "
+      // bg="left top url(/images/bg.svg) no-repeat , right 100% / 60% url(/images/bg.svg) no-repeat "
     >
       <Box
         minHeight="calc(100vh - 70px)"
@@ -45,6 +45,7 @@ function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
             fontWeight="extrabold"
             color="green"
             textTransform="uppercase"
+            letterSpacing="0.3rem"
           >
             Бесплатно!
           </Text>

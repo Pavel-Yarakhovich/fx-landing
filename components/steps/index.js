@@ -7,7 +7,7 @@ function Steps() {
       <Text fontSize="3xl" fontWeight="700">
         З простых шага:
       </Text>
-      <List>
+      <List fontFamily="FuturaLight" fontSize="xl">
         <ListItem>
           <ListIcon as={MdCheckCircle} color="green.500" />
           Перейти по ссылке и зарегистрировать кабинет у брокера NPBFX

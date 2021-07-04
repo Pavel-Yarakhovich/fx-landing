@@ -20,7 +20,7 @@ function Offer() {
       <Text fontSize="3xl" fontWeight="700" textAlign="center">
         Количество предоставляемых роботов:
       </Text>
-      <List textAlign="center">
+      <List textAlign="center" fontFamily="FuturaLight" fontSize="xl">
         {OFFER.map((of, idx) => (
           <ListItem key={idx}>
             <ListIcon as={SiAbbrobotstudio} color="green.500" />
