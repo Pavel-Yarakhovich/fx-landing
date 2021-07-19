@@ -87,7 +87,7 @@ const Images = ({ title, imagesArr, robotTitle }) => {
 const ActiveRobot = React.forwardRef(({ robot }, ref) => {
   return (
     <>
-      <Box w="100%" p={2} mb="30px" ref={ref}>
+      <Box w="100%" p={[0, 1, 2]} mb="30px" ref={ref}>
         <Flex
           justifyContent="flex-start"
           alignItems="flex-start"
@@ -101,7 +101,7 @@ const ActiveRobot = React.forwardRef(({ robot }, ref) => {
             height="auto"
           />
 
-          <Box p={["2", "3", "6"]}>
+          <Box p={[1, 2, 6]}>
             <Text fontSize="3xl" fontWeight="700" mb={3}>
               {robot.title}
             </Text>
@@ -109,7 +109,13 @@ const ActiveRobot = React.forwardRef(({ robot }, ref) => {
             {robot.features.map((f) => {
               const [key, value] = f.split("|");
               return (
-                <Box d="flex" alignItems="baseline" mb={3} key={key}>
+                <Box
+                  d="flex"
+                  alignItems="baseline"
+                  flexDirection={["column", "row"]}
+                  mb={3}
+                  key={key}
+                >
                   <Badge borderRadius="full" px="2" colorScheme="green">
                     {key}
                   </Badge>
