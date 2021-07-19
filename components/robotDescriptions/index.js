@@ -3,6 +3,8 @@ import { Text, Flex } from "@chakra-ui/react";
 import Robot from "./robot";
 import ActiveRobot from "./activeRobot";
 
+import { robotDescription } from '../../robot-descriptions';
+
 const robots = [
   {
     image: "/images/scalper.png",
@@ -107,7 +109,7 @@ const robots = [
 ];
 
 function RobotDesc() {
-  const [activeRobot, setActiveRobot] = React.useState(robots[0]);
+  const [activeRobot, setActiveRobot] = React.useState(robotDescription[0]);
   const activeRobotRef = React.useRef(null);
 
   const handleClickRobot = React.useCallback((robot) => {
@@ -133,7 +135,7 @@ function RobotDesc() {
       </Text>
       <ActiveRobot robot={activeRobot} ref={activeRobotRef} />
       <Flex flexDirection="row" flexWrap="wrap">
-        {robots.map((r, idx) => (
+        {robotDescription.map((r, idx) => (
           <Robot key={idx} robot={r} handleClick={handleClickRobot} />
         ))}
       </Flex>

@@ -5,6 +5,7 @@ import RobotDescription from './robotDescriptions';
 const ThirdScreen = React.forwardRef((_, ref) => {
   return (
     <Container
+      id="robot-description"
       maxW="container.xl"
       p={4}
       ref={ref}

@@ -8,165 +8,147 @@ import {
   Stack,
   HStack,
   Link,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FiExternalLink } from "react-icons/fi";
+import ImageViewer from "../imageViewer";
+import { GiClick } from "react-icons/gi";
+
+const Images = ({ title, imagesArr, robotTitle }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedImage, setSelectedImage] = React.useState(null);
+
+  const handleImageClick = React.useCallback(
+    (image) => {
+      setSelectedImage(image);
+      onOpen();
+    },
+    [setSelectedImage, onOpen]
+  );
+
+  if (!imagesArr || imagesArr?.length === 0) return null;
+  return (
+    <Stack spacing={3}>
+      <HStack>
+        <Text fontSize="xl" fontWeight="700">
+          {title}
+        </Text>
+        <GiClick size="30px" color="#1a202c" />
+      </HStack>
+
+      <HStack
+        overflow="auto"
+        maxWidth="100%"
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "10px",
+            borderRadius: "10px",
+          },
+          "&::-webkit-scrollbar-track": {
+            width: "2px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            width: "4px",
+            background: "#c6f6d5",
+            borderRadius: "12px",
+            boxShadow: "0 0 1px rgba(255, 255, 255, 0.5)",
+          },
+        }}
+      >
+        {imagesArr.map((d) => (
+          <Image
+            key={d}
+            src={`/images/${d}`}
+            alt={robotTitle}
+            w={["100%", "60%", "35%"]}
+            flexShrink="1"
+            flexGrow="1"
+            height="200px"
+            borderRadius="4px"
+            onClick={() => handleImageClick(d)}
+            _hover={{
+              cursor: "pointer",
+              flexGrow: 1.2,
+              transition: "all 200ms ease",
+            }}
+          />
+        ))}
+      </HStack>
+      <ImageViewer
+        isOpen={isOpen}
+        onClose={onClose}
+        image={selectedImage}
+        urls={imagesArr}
+        title={robotTitle}
+      />
+    </Stack>
+  );
+};
 
 const ActiveRobot = React.forwardRef(({ robot }, ref) => {
   return (
-    <Box w="100%" p={2} mb="30px" ref={ref}>
-      <Flex
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        flexDirection={["column", null, "row"]}
-      >
-        <Image
-          src={robot.image}
-          alt={robot.title}
-          w={["100%", "60%", "35%"]}
-          flexShrink="0"
-          height="auto"
-        />
+    <>
+      <Box w="100%" p={2} mb="30px" ref={ref}>
+        <Flex
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          flexDirection={["column", null, "row"]}
+        >
+          <Image
+            src={robot.image || "/images/scalper.png"}
+            alt={robot.title}
+            w={["100%", "60%", "35%"]}
+            flexShrink="0"
+            height="auto"
+          />
 
-        <Box p="6">
-          <Text fontSize="3xl" fontWeight="700" mb={3}>
-            {robot.title}
-          </Text>
-
-          <Box d="flex" alignItems="baseline" mb={3}>
-            <Badge borderRadius="full" px="2" colorScheme="green">
-              New
-            </Badge>
-            <Box
-              color="gray.500"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              fontSize="xs"
-              textTransform="uppercase"
-              ml="2"
-            >
-              {robot.equity} equity &bull; shoulder - {robot.shoulder}
-            </Box>
-          </Box>
-
-          <Box d="flex" alignItems="baseline" mb={3}>
-            <Badge borderRadius="full" px="2" colorScheme="green">
-              Пара
-            </Badge>
-            <Box
-              color="gray.500"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              fontSize="xs"
-              textTransform="uppercase"
-              ml="2"
-            >
-              {robot.pair}
-            </Box>
-          </Box>
-
-          <Box d="flex" alignItems="baseline" mb={3}>
-            <Badge borderRadius="full" px="2" colorScheme="green">
-              Терминал
-            </Badge>
-            <Box
-              color="gray.500"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              fontSize="xs"
-              textTransform="uppercase"
-              ml="2"
-            >
-              {robot.terminal}
-            </Box>
-          </Box>
-
-          <Box d="flex" alignItems="baseline" mb={3}>
-            <Badge borderRadius="full" px="2" colorScheme="green">
-              Таймфрейм
-            </Badge>
-            <Box
-              color="gray.500"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              fontSize="xs"
-              textTransform="uppercase"
-              ml="2"
-            >
-              {robot.timeframe}
-            </Box>
-          </Box>
-
-          <Text mb={4} fontFamily="FuturaLight" fontSize="xl">
-            После оплаты Вам на почту будет выслан робот, set-файлы и подробная
-            инструкция. Советник можно привязать к 3-м счетам. После оплаты мы
-            привяжем робот к Вашему счету (в последующем, когда вам понадобится
-            привязать еще к одному счету, то вы вышлите его номер, и новая
-            версия будет привязана уже к этим двум счетам. И так до трех
-            счетов). Также по мере выхода обновлений советника, мы будем
-            высылать вам обновленную версию. Мы предоставляем настройки (в
-            советнике есть агрессивные и консервативные настройки.) и
-            консультируем по работе советника. Настройки в советнике стоят по
-            умолчанию, необходимо только отрегулировать лотность (мы поможем
-            подобрать лотность). Мы всегда на связи. Даже те трейдеры, которые
-            не имеют опыта торговли, с нашей помощью устанавливают советник и
-            начинают торговать.
-          </Text>
-
-          <Stack spacing={3}>
-            <Text fontSize="xl" fontWeight="700">
-              Результаты торговли
+          <Box p={["2", "3", "6"]}>
+            <Text fontSize="3xl" fontWeight="700" mb={3}>
+              {robot.title}
             </Text>
-            <HStack>
-              <Link
-                href="https://chakra-ui.com"
-                isExternal
-                mx="2px"
-                color="teal"
-                border="1px solid #ddd"
-                borderRadius="4px"
-                p={2}
-                position="relative"
-              >
-                Chakra Design system{" "}
-                <FiExternalLink
-                  ml="5px"
-                  position="absolute"
-                  top="0"
-                  right="0"
-                />
-              </Link>
-              <Link
-                href="https://chakra-ui.com"
-                isExternal
-                mx="2px"
-                color="teal"
-                border="1px solid #ddd"
-                borderRadius="4px"
-                p={2}
-                position="relative"
-              >
-                Chakra Design system <FiExternalLink ml="5px" />
-              </Link>
-              <Link
-                href="https://chakra-ui.com"
-                isExternal
-                mx="2px"
-                color="teal"
-                border="1px solid #ddd"
-                borderRadius="4px"
-                p={2}
-                position="relative"
-              >
-                Chakra Design system <FiExternalLink ml="5px" />
-              </Link>
-            </HStack>
-          </Stack>
-        </Box>
-      </Flex>
-    </Box>
+
+            {robot.features.map((f) => {
+              const [key, value] = f.split("|");
+              return (
+                <Box d="flex" alignItems="baseline" mb={3} key={key}>
+                  <Badge borderRadius="full" px="2" colorScheme="green">
+                    {key}
+                  </Badge>
+                  <Box
+                    color="gray.500"
+                    fontWeight="semibold"
+                    letterSpacing="wide"
+                    fontSize="xs"
+                    textTransform="uppercase"
+                    ml="2"
+                  >
+                    {value}
+                  </Box>
+                </Box>
+              );
+            })}
+
+            <Text mb={4} fontFamily="FuturaLight" fontSize="xl">
+              {robot.desc}
+            </Text>
+
+            <Images
+              title="Примеры сделок"
+              imagesArr={robot.deals}
+              robotTitle={robot.title}
+            />
+
+            <Images
+              title="Примеры сигналов"
+              imagesArr={robot.signals}
+              robotTitle={robot.title}
+            />
+          </Box>
+        </Flex>
+      </Box>
+    </>
   );
 });
 
-ActiveRobot.displayName = 'Active Robot';
+ActiveRobot.displayName = "Active Robot";
 
 export default ActiveRobot;

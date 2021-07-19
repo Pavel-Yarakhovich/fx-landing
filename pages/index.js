@@ -1,9 +1,16 @@
 import React from "react";
 import Head from "next/head";
+import { Container, Progress } from "@chakra-ui/react";
 import { useInView } from "react-intersection-observer";
 import loadable from "@loadable/component";
 
-const FirstScreen = loadable(() => import("../components/firstScreen"));
+const FirstScreen = loadable(() => import("../components/firstScreen"), {
+  fallback: (
+    <Container maxW="xl" minHeight="75vh">
+      <Progress size="md" isIndeterminate hasStripe />
+    </Container>
+  ),
+});
 const SecondScreen = loadable(() => import("../components/secondScreen"));
 const ThirdScreen = loadable(() => import("../components/thirdScreen"));
 const FourthScreen = loadable(() => import("../components/fourthScreen"));
@@ -72,7 +79,7 @@ export default function Home() {
       <header className={styles.header} ref={setRefs}>
         <Expiration />
       </header>
-      <div className={styles.underlay}/>
+      <div className={styles.underlay} />
       <main className={styles.main}>
         <FirstScreen
           addUserHandler={addUserHandler}
