@@ -1,4 +1,5 @@
 import { Box, Image, Badge } from "@chakra-ui/react";
+import React from "react";
 
 function RobotItem({ robot, handleClick }) {
   return (
@@ -22,7 +23,7 @@ function RobotItem({ robot, handleClick }) {
         }}
       >
         <Image
-          src={robot.image}
+          src={robot.image || "/images/scalper.png"}
           alt={robot.title}
           maxHeight="250px"
           margin="auto"
@@ -40,19 +41,28 @@ function RobotItem({ robot, handleClick }) {
           </Box>
 
           <Box d="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="2" colorScheme="green">
-              New
-            </Badge>
-            <Box
-              color="gray.500"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              fontSize="xs"
-              textTransform="uppercase"
-              ml="2"
-            >
-              {robot.equity} equity &bull; shoulder - {robot.shoulder}
-            </Box>
+            {robot.features.map((f) => {
+              const [key, value] = f.split("|");
+              if (key === "Терминал" || key === "ТаймФрейм") {
+                return (
+                  <Box mr={2} key={key}>
+                    <Badge borderRadius="full" px="2" colorScheme="green">
+                      {key}
+                    </Badge>
+                    <Box
+                      color="gray.500"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      ml="2"
+                    >
+                      {value}
+                    </Box>
+                  </Box>
+                );
+              }
+            })}
           </Box>
         </Box>
       </Box>

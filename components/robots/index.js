@@ -1,17 +1,20 @@
 import { Text, List, ListItem, Stack, ListIcon } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
+import Link from "next/link";
+
+import { robotDescription } from "../../robot-descriptions";
 
 const ROBOTS = [
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
-  { title: 'Robot', link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
+  { title: "Robot", link: "#" },
 ];
 
 function RobotsList() {
@@ -26,10 +29,14 @@ function RobotsList() {
         </Text>
       </Stack>
       <List textAlign="center" fontFamily="FuturaLight" fontSize="xl">
-        {ROBOTS.map((robot, idx) => (
+        {robotDescription.map((robot, idx) => (
           <ListItem key={idx}>
-            <ListIcon as={MdCheckCircle} color="green.500" />
-            {robot.title} {idx + 1}
+            <Link href="#robot-description" passHref>
+              <a>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                {robot.title}
+              </a>
+            </Link>
           </ListItem>
         ))}
       </List>
