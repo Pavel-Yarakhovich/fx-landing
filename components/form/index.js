@@ -28,6 +28,8 @@ function ContactForm({ addUser }) {
     console.log('Admin ', ADMIN);
     if (name === "email" && value === ADMIN) {
       setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
     }
     setErrors((prev) => ({
       ...prev,
@@ -127,55 +129,8 @@ function ContactForm({ addUser }) {
           isInvalid={errors.email}
         />
       </FormControl>
-      <FormControl id="count" isRequired>
-        <FormLabel>Номер счёта</FormLabel>
-        {errors.count && (
-          <Text color="red" fontSize="xs">
-            {errors.count}
-          </Text>
-        )}
-        <Input
-          placeholder="Номер счёта"
-          name="count"
-          value={newUser.count}
-          onChange={changeUserData}
-          isInvalid={errors.count}
-          maxLength={30}
-        />
-      </FormControl>
-      <FormControl id="selectedRobots">
-        <FormLabel>Хочу вот эти роботы</FormLabel>
-        {errors.selectedRobots && (
-          <Text color="red" fontSize="xs">
-            {errors.selectedRobots}
-          </Text>
-        )}
-        <HStack spacing={0} direction="row" flexWrap="wrap" justifyContent="flex-start">
-          {robotDescription.map(({ title }) => (
-            <Checkbox
-              key={title}
-              size="md"
-              colorScheme="green"
-              fontSize="10px" pr={4}
-              isChecked={newUser.selectedRobots.includes(title)}
-              onChange={() => handleCheckbox(title)}
-            >
-              {title}
-            </Checkbox>
-          ))}
-        </HStack>
-      </FormControl>
-      <Button
-        colorScheme="green"
-        alignSelf="center"
-        w="100%"
-        onClick={register}
-        isLoading={isRegistering}
-      >
-        Регистрация
-      </Button>
 
-      {isAdmin && (
+      {isAdmin ? (
         <>
           <FormControl id="admin-password" isRequired>
             <FormLabel>Admin-пароль</FormLabel>
@@ -199,6 +154,56 @@ function ContactForm({ addUser }) {
             disabled={adminPswd !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD}
           >
             <Link href="/admin">Go to ADMIN</Link>
+          </Button>
+        </>
+      ) : (
+        <>
+          <FormControl id="count" isRequired>
+            <FormLabel>Номер счёта</FormLabel>
+            {errors.count && (
+              <Text color="red" fontSize="xs">
+                {errors.count}
+              </Text>
+            )}
+            <Input
+              placeholder="Номер счёта"
+              name="count"
+              value={newUser.count}
+              onChange={changeUserData}
+              isInvalid={errors.count}
+              maxLength={30}
+            />
+          </FormControl>
+          <FormControl id="selectedRobots">
+            <FormLabel>Хочу вот эти роботы</FormLabel>
+            {errors.selectedRobots && (
+              <Text color="red" fontSize="xs">
+                {errors.selectedRobots}
+              </Text>
+            )}
+            <HStack spacing={0} direction="row" flexWrap="wrap" justifyContent="flex-start">
+              {robotDescription.map(({ title }) => (
+                <Checkbox
+                  key={title}
+                  size="md"
+                  colorScheme="green"
+                  fontSize="10px" pr={4}
+                  isChecked={newUser.selectedRobots.includes(title)}
+                  onChange={() => handleCheckbox(title)}
+                >
+                  {title}
+                </Checkbox>
+              ))}
+            </HStack>
+          </FormControl>
+          <Button
+            colorScheme="green"
+            alignSelf="center"
+            w="100%"
+            onClick={register}
+            isLoading={isRegistering}
+          >
+            Регистрация
           </Button>
         </>
       )}
