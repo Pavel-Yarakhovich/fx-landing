@@ -97,6 +97,7 @@ const ActiveRobot = React.forwardRef(({ robot }, ref) => {
         >
           <Image
             src={robot.image ? `/images/robots/${robot.image}` : "/images/scalper.png"}
+            fallbackSrc="/images/fallback.png"
             alt={robot.title}
             w={["100%", "60%", "35%"]}
             flexShrink="0"
