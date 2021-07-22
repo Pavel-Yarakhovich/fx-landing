@@ -92,7 +92,7 @@ export default function Home() {
           ref={secondScreenRef}
         />
         <ThirdScreen ref={thirdScreenRef} />
-        <FourthScreen addUserHandler={addUserHandler} />
+        <FourthScreen addUserHandler={addUserHandler} addUserResponse={addUserResponse} />
 
         <ToTopButton show={!inView} handleClick={scrollToTop} />
       </main>
