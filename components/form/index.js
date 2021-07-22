@@ -25,12 +25,7 @@ function ContactForm({ addUser }) {
   const [adminPswd, setAdminPswd] = React.useState("");
 
   const changeUserData = React.useCallback(({ target: { name, value } }) => {
-    console.log('Admin ', ADMIN);
-    if (name === "email" && value === ADMIN) {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
+    setIsAdmin(name === "email" && value === ADMIN);
     setErrors((prev) => ({
       ...prev,
       [name]: "",
