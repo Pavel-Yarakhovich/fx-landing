@@ -13,7 +13,7 @@ import {
 import ImageViewer from "../imageViewer";
 import { GiClick } from "react-icons/gi";
 
-const Images = ({ title, imagesArr, robotTitle }) => {
+const Images = ({ title, imagesArr, robotTitle, imageSubfolder }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImage, setSelectedImage] = React.useState(null);
 
@@ -27,7 +27,7 @@ const Images = ({ title, imagesArr, robotTitle }) => {
 
   if (!imagesArr || imagesArr?.length === 0) return null;
   return (
-    <Stack spacing={3}>
+    <Stack spacing={3} mb={3}>
       <HStack>
         <Text fontSize="xl" fontWeight="700">
           {title}
@@ -36,6 +36,8 @@ const Images = ({ title, imagesArr, robotTitle }) => {
       </HStack>
 
       <HStack
+        p={3}
+        spacing={3}
         overflow="auto"
         maxWidth="100%"
         css={{
@@ -57,17 +59,16 @@ const Images = ({ title, imagesArr, robotTitle }) => {
         {imagesArr.map((d) => (
           <Image
             key={d}
-            src={`/images/${d}`}
+            src={`/images/${imageSubfolder ? `${imageSubfolder}/` : ''}${d}`}
             alt={robotTitle}
             w={["100%", "60%", "35%"]}
-            flexShrink="1"
-            flexGrow="1"
             height="200px"
             borderRadius="4px"
+            boxShadow="0px 5px 6px rgba(0, 0, 0, 0.2), 0px 3px 11px rgba(0, 0, 0, 0.12),
+    0px 4px 8px rgba(0, 0, 0, 0.14)"
             onClick={() => handleImageClick(d)}
             _hover={{
               cursor: "pointer",
-              flexGrow: 1.2,
               transition: "all 200ms ease",
             }}
           />
@@ -79,6 +80,7 @@ const Images = ({ title, imagesArr, robotTitle }) => {
         image={selectedImage}
         urls={imagesArr}
         title={robotTitle}
+        imageSubfolder={imageSubfolder}
       />
     </Stack>
   );
@@ -94,7 +96,7 @@ const ActiveRobot = React.forwardRef(({ robot }, ref) => {
           flexDirection={["column", null, "row"]}
         >
           <Image
-            src={robot.image || "/images/scalper.png"}
+            src={robot.image ? `/images/robots/${robot.image}` : "/images/scalper.png"}
             alt={robot.title}
             w={["100%", "60%", "35%"]}
             flexShrink="0"
@@ -136,6 +138,13 @@ const ActiveRobot = React.forwardRef(({ robot }, ref) => {
             <Text mb={4} fontFamily="FuturaLight" fontSize="xl">
               {robot.desc}
             </Text>
+
+            <Images
+              title="Результаты клиентов"
+              imagesArr={robot.results}
+              robotTitle={robot.title}
+              imageSubfolder="results"
+            />
 
             <Images
               title="Примеры сделок"

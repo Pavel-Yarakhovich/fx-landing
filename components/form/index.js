@@ -6,10 +6,14 @@ import {
   FormLabel,
   Button,
   Text,
+  HStack,
+  Checkbox,
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-const initUser = { name: "", email: "", telegram: "" };
+import { robotDescription } from '../../robot-descriptions';
+
+const initUser = { name: "", email: "", count: "", selectedRobots: [] };
 const EMAIL_VALIDATOR = /\S+@\S+\.\S+/;
 const ADMIN = process.env.NEXT_PUBLIC_ADMIN;
 
@@ -21,6 +25,7 @@ function ContactForm({ addUser }) {
   const [adminPswd, setAdminPswd] = React.useState("");
 
   const changeUserData = React.useCallback(({ target: { name, value } }) => {
+    console.log('Admin ', ADMIN);
     if (name === "email" && value === ADMIN) {
       setIsAdmin(true);
     }
@@ -34,12 +39,24 @@ function ContactForm({ addUser }) {
     }));
   }, []);
 
+  const handleCheckbox = React.useCallback((robot) => {
+    const wasSelected = newUser.selectedRobots.includes(robot);
+    setNewUser((prev) => ({
+      ...prev,
+      selectedRobots: wasSelected ? prev.selectedRobots.filter(r => r !== robot) : [...prev.selectedRobots, robot],
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      selectedRobots: "",
+    }));
+  }, [newUser]);
+
   const validateForm = React.useCallback(() => {
     let isValid = true;
     setErrors(initUser);
     const errors = { ...initUser };
     Object.entries(newUser).forEach(([key, value]) => {
-      if (!value && key !== "telegram") {
+      if (!value) {
         errors[key] = "Поле не может быть пустым.";
         isValid = false;
       }
@@ -48,6 +65,10 @@ function ContactForm({ addUser }) {
           errors[key] = "Неверный формат email.";
           isValid = false;
         }
+      }
+      if (key === "selectedRobots" && value.length === 0) {
+        errors[key] = "Выберите минимум одного робота.";
+        isValid = false;
       }
     });
     setErrors(errors);
@@ -59,9 +80,6 @@ function ContactForm({ addUser }) {
     setRegistering(true);
     console.log("NEW ", newUser);
     const reqBody = { ...newUser };
-    if (!newUser.telegram) {
-      reqBody.telegram = 'Не указан';
-    }
     await addUser(reqBody);
     setNewUser(initUser);
     setErrors(initUser);
@@ -90,6 +108,7 @@ function ContactForm({ addUser }) {
           value={newUser.name}
           onChange={changeUserData}
           isInvalid={errors.name}
+          maxLength={50}
         />
       </FormControl>
       <FormControl id="email" isRequired>
@@ -108,20 +127,43 @@ function ContactForm({ addUser }) {
           isInvalid={errors.email}
         />
       </FormControl>
-      <FormControl id="telegram">
-        <FormLabel>Telegram</FormLabel>
-        {errors.telegram && (
+      <FormControl id="count" isRequired>
+        <FormLabel>Номер счёта</FormLabel>
+        {errors.count && (
           <Text color="red" fontSize="xs">
-            {errors.telegram}
+            {errors.count}
           </Text>
         )}
         <Input
-          placeholder="Telegram"
-          name="telegram"
-          value={newUser.telegram}
+          placeholder="Номер счёта"
+          name="count"
+          value={newUser.count}
           onChange={changeUserData}
-          isInvalid={errors.telegram}
+          isInvalid={errors.count}
+          maxLength={30}
         />
+      </FormControl>
+      <FormControl id="selectedRobots">
+        <FormLabel>Хочу вот эти роботы</FormLabel>
+        {errors.selectedRobots && (
+          <Text color="red" fontSize="xs">
+            {errors.selectedRobots}
+          </Text>
+        )}
+        <HStack spacing={0} direction="row" flexWrap="wrap" justifyContent="flex-start">
+          {robotDescription.map(({ title }) => (
+            <Checkbox
+              key={title}
+              size="md"
+              colorScheme="green"
+              fontSize="10px" pr={4}
+              isChecked={newUser.selectedRobots.includes(title)}
+              onChange={() => handleCheckbox(title)}
+            >
+              {title}
+            </Checkbox>
+          ))}
+        </HStack>
       </FormControl>
       <Button
         colorScheme="green"

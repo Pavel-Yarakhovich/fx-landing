@@ -23,7 +23,7 @@ function RobotItem({ robot, handleClick }) {
         }}
       >
         <Image
-          src={robot.image || "/images/scalper.png"}
+          src={robot.image ? `/images/robots/${robot.image}` : "/images/scalper.png"}
           alt={robot.title}
           maxHeight="250px"
           margin="auto"
