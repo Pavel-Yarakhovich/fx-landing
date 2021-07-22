@@ -14,17 +14,17 @@ import {
   Tfoot,
   Tr,
   Th,
-  Td,
   TableCaption,
 } from "@chakra-ui/react";
 import ToTopButton from "../components/toTopButton";
 import { useInView } from "react-intersection-observer";
+import CustomRow from '../components/copyableTableRow';
 
 import { MongoClient } from "mongodb";
 
 import styles from "../styles/Home.module.css";
 
-export default function Home(props) {
+export default function Admin(props) {
   const headerRef = React.useRef(null);
   const { ref, inView } = useInView({
     threshold: 0.3,
@@ -111,21 +111,18 @@ export default function Home(props) {
                   <Tr>
                     <Th>ИМЯ</Th>
                     <Th>EMAIL</Th>
-                    <Th>TELEGRAM</Th>
+                    <Th>СЧЕТ</Th>
+                    <Th>РОБОТЫ</Th>
+                    <Th></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {props.users.map((user) => (
-                    <Tr key={user.id}>
-                      <Td>{user.name}</Td>
-                      <Td>{user.email}</Td>
-                      <Td>{user.telegram}</Td>
-                    </Tr>
+                  {props.users.map((user) => (<CustomRow key={user.id} user={user} />
                   ))}
                 </Tbody>
                 <Tfoot>
                   <Tr>
-                    <Th colSpan={2}>Всего пользователей</Th>
+                    <Th colSpan={3}>Всего зарегистрировано</Th>
                     <Th>{props.users.length}</Th>
                   </Tr>
                 </Tfoot>
@@ -155,7 +152,8 @@ export async function getStaticProps() {
     id: user._id.toString(),
     name: user.name,
     email: user.email,
-    telegram: user.telegram,
+    count: user.count,
+    robots: user.selectedRobots,
   }));
 
   client.close();

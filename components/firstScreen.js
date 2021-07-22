@@ -49,6 +49,9 @@ function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
           >
             Бесплатно!
           </Text>
+          <Text fontSize={["2xl", null, "4xl"]} textAlign="center">
+            Заработай от 100$ уже сегодня, просто установив один из роботов.
+          </Text>
         </Stack>
 
         <Flex

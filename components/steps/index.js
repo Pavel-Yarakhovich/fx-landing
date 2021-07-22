@@ -1,4 +1,4 @@
-import { Stack, Text, List, ListItem, ListIcon } from "@chakra-ui/react";
+import { Stack, Text, List, ListItem, ListIcon, Link, Image } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
 function Steps() {
@@ -10,19 +10,21 @@ function Steps() {
       <List fontFamily="FuturaLight" fontSize="xl">
         <ListItem>
           <ListIcon as={MdCheckCircle} color="green.500" />
-          Перейти по ссылке и зарегистрировать кабинет у брокера NPBFX
+          Перейти по <Link href="https://nmaffru.com/z1iuz5b2wg80" isExternal color="#008000" fontWeight="700">ссылке</Link> и зарегистрировать кабинет у <Link href="https://nmaffru.com/z1iuz5b2wg80" isExternal color="#008000" fontWeight="700">брокера NPBFX</Link>
         </ListItem>
         <ListItem>
           <ListIcon as={MdCheckCircle} color="green.500" />
           Открыть счет и пополнить счет на сумму от 500$ (при открытии
-          убедиться, что введен партнерский код X)
+          убедиться, что введен партнерский код <Text fontWeight={700} display="inline-block">a6d12b12</Text>)
         </ListItem>
         <ListItem>
           <ListIcon as={MdCheckCircle} color="green.500" />
-          Напиши номер счета и список желаемых роботов нашему боту в Telegram
-          или на email
+          Напиши своё имя, е-мейл, номер счета и список желаемых роботов в форму обратной связи
         </ListItem>
       </List>
+      <Link href="https://www.npbfx.ru/" target="_blank" rel="noopener noreferrer" alignSelf="center">
+        <Image src="/images/npbfx_logo.png" alt="NPBFX logo" height="80px" />
+      </Link>
     </Stack>
   );
 }
