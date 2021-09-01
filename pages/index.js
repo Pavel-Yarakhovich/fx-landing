@@ -4,6 +4,8 @@ import { Container, Progress } from "@chakra-ui/react";
 import { useInView } from "react-intersection-observer";
 import loadable from "@loadable/component";
 
+import Pixel from "../components/Pixel";
+
 const FirstScreen = loadable(() => import("../components/firstScreen"), {
   fallback: (
     <Container maxW="xl" minHeight="75vh">
@@ -67,6 +69,7 @@ export default function Home() {
 
   return (
     <div>
+      <Pixel name="FACEBOOK_PIXEL" />
       <Head>
         <title>Уникальная возможность!</title>
         <meta
@@ -92,7 +95,10 @@ export default function Home() {
           ref={secondScreenRef}
         />
         <ThirdScreen ref={thirdScreenRef} />
-        <FourthScreen addUserHandler={addUserHandler} addUserResponse={addUserResponse} />
+        <FourthScreen
+          addUserHandler={addUserHandler}
+          addUserResponse={addUserResponse}
+        />
 
         <ToTopButton show={!inView} handleClick={scrollToTop} />
       </main>

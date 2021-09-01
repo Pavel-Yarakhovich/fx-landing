@@ -18,7 +18,8 @@ import {
 } from "@chakra-ui/react";
 import ToTopButton from "../components/toTopButton";
 import { useInView } from "react-intersection-observer";
-import CustomRow from '../components/copyableTableRow';
+import CustomRow from "../components/copyableTableRow";
+import Pixel from "../components/Pixel";
 
 import { MongoClient } from "mongodb";
 
@@ -54,6 +55,7 @@ export default function Admin(props) {
 
   return (
     <div>
+      <Pixel name="FACEBOOK_PIXEL" />
       <Head>
         <title>Admin</title>
         <meta
@@ -105,7 +107,7 @@ export default function Admin(props) {
 
               <Table variant="striped" colorScheme="teal" w="100%">
                 <TableCaption>
-                  Список актуален на { new Date().toDateString() }
+                  Список актуален на {new Date().toDateString()}
                 </TableCaption>
                 <Thead>
                   <Tr>
@@ -117,7 +119,8 @@ export default function Admin(props) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {props.users.map((user) => (<CustomRow key={user.id} user={user} />
+                  {props.users.map((user) => (
+                    <CustomRow key={user.id} user={user} />
                   ))}
                 </Tbody>
                 <Tfoot>
