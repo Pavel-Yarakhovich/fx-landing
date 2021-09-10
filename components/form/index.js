@@ -11,11 +11,21 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { robotDescription } from '../../robot-descriptions';
+import { robotDescription } from "../../robot-descriptions";
+
+// Helpers
+import { validateCountNumber } from "../../utils";
 
 const initUser = { name: "", email: "", count: "", selectedRobots: [] };
 const EMAIL_VALIDATOR = /\S+@\S+\.\S+/;
 const ADMIN = process.env.NEXT_PUBLIC_ADMIN;
+
+const ERRORS = {
+  emptyField: "Поле не может быть пустым.",
+  wrongEmail: "Неверный формат email.",
+  noRobotsSelected: "Выберите минимум одного робота.",
+  wrongPartnerCode: "Данный торговый код не найден в нашей партнерской сети.",
+};
 
 function ContactForm({ addUser }) {
   const [isRegistering, setRegistering] = React.useState(false);
@@ -36,17 +46,22 @@ function ContactForm({ addUser }) {
     }));
   }, []);
 
-  const handleCheckbox = React.useCallback((robot) => {
-    const wasSelected = newUser.selectedRobots.includes(robot);
-    setNewUser((prev) => ({
-      ...prev,
-      selectedRobots: wasSelected ? prev.selectedRobots.filter(r => r !== robot) : [...prev.selectedRobots, robot],
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      selectedRobots: "",
-    }));
-  }, [newUser]);
+  const handleCheckbox = React.useCallback(
+    (robot) => {
+      const wasSelected = newUser.selectedRobots.includes(robot);
+      setNewUser((prev) => ({
+        ...prev,
+        selectedRobots: wasSelected
+          ? prev.selectedRobots.filter((r) => r !== robot)
+          : [...prev.selectedRobots, robot],
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        selectedRobots: "",
+      }));
+    },
+    [newUser]
+  );
 
   const validateForm = React.useCallback(() => {
     let isValid = true;
@@ -54,17 +69,21 @@ function ContactForm({ addUser }) {
     const errors = { ...initUser };
     Object.entries(newUser).forEach(([key, value]) => {
       if (!value) {
-        errors[key] = "Поле не может быть пустым.";
+        errors[key] = ERRORS.emptyField;
         isValid = false;
       }
       if (key === "email") {
         if (value && !EMAIL_VALIDATOR.test(value)) {
-          errors[key] = "Неверный формат email.";
+          errors[key] = ERRORS.wrongEmail;
           isValid = false;
         }
       }
       if (key === "selectedRobots" && value.length === 0) {
-        errors[key] = "Выберите минимум одного робота.";
+        errors[key] = ERRORS.noRobotsSelected;
+        isValid = false;
+      }
+      if (key === "count" && !validateCountNumber(value)) {
+        errors[key] = ERRORS.wrongPartnerCode;
         isValid = false;
       }
     });
@@ -76,7 +95,7 @@ function ContactForm({ addUser }) {
     if (!validateForm()) return;
     setRegistering(true);
     console.log("NEW ", newUser);
-    const reqBody = { ...newUser };
+    const reqBody = { ...newUser, created: Date.now() };
     await addUser(reqBody);
     setNewUser(initUser);
     setErrors(initUser);
@@ -139,7 +158,10 @@ function ContactForm({ addUser }) {
               name="adminPswd"
               value={adminPswd}
               onChange={({ target }) => setAdminPswd(target.value)}
-              isInvalid={adminPswd && adminPswd !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD}
+              isInvalid={
+                adminPswd &&
+                adminPswd !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+              }
             />
           </FormControl>
           <Button
@@ -166,7 +188,7 @@ function ContactForm({ addUser }) {
               value={newUser.count}
               onChange={changeUserData}
               isInvalid={errors.count}
-              maxLength={30}
+              maxLength={6}
             />
           </FormControl>
           <FormControl id="selectedRobots">
@@ -176,13 +198,19 @@ function ContactForm({ addUser }) {
                 {errors.selectedRobots}
               </Text>
             )}
-            <HStack spacing={0} direction="row" flexWrap="wrap" justifyContent="flex-start">
+            <HStack
+              spacing={0}
+              direction="row"
+              flexWrap="wrap"
+              justifyContent="flex-start"
+            >
               {robotDescription.map(({ title }) => (
                 <Checkbox
                   key={title}
                   size="md"
                   colorScheme="green"
-                  fontSize="10px" pr={4}
+                  fontSize="10px"
+                  pr={4}
                   isChecked={newUser.selectedRobots.includes(title)}
                   onChange={() => handleCheckbox(title)}
                 >

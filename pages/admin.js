@@ -115,6 +115,7 @@ export default function Admin(props) {
                     <Th>EMAIL</Th>
                     <Th>СЧЕТ</Th>
                     <Th>РОБОТЫ</Th>
+                    <Th>ВРЕМЯ ВВОДА ДАННЫХ</Th>
                     <Th></Th>
                   </Tr>
                 </Thead>
@@ -157,6 +158,7 @@ export async function getStaticProps() {
     email: user.email,
     count: user.count,
     robots: user.selectedRobots,
+    created: user?.created || "не указано",
   }));
 
   client.close();
