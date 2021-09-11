@@ -4,19 +4,6 @@ import Link from "next/link";
 
 import { robotDescription } from "../../robot-descriptions";
 
-const ROBOTS = [
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-  { title: "Robot", link: "#" },
-];
-
 function RobotsList() {
   return (
     <Stack spacing={4}>
@@ -40,7 +27,10 @@ function RobotsList() {
           </ListItem>
         ))}
       </List>
-      <Text fontSize="xl" fontWeight="400" textAlign="center">+3 секретных робота, которые Вы можете получить при открытии счета от 16.000$</Text>
+      <Text fontSize="xl" fontWeight="400" textAlign="center">
+        +3 секретных робота, которые Вы можете получить при открытии счета от
+        16.000$
+      </Text>
     </Stack>
   );
 }

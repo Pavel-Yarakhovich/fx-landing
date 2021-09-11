@@ -24,7 +24,7 @@ const ERRORS = {
   emptyField: "Поле не может быть пустым.",
   wrongEmail: "Неверный формат email.",
   noRobotsSelected: "Выберите минимум одного робота.",
-  wrongPartnerCode: "Данный торговый код не найден в нашей партнерской сети.",
+  wrongPartnerCode: "Данный торговый счёт не найден в нашей партнерской сети.",
 };
 
 function ContactForm({ addUser }) {
@@ -94,7 +94,6 @@ function ContactForm({ addUser }) {
   const register = React.useCallback(async () => {
     if (!validateForm()) return;
     setRegistering(true);
-    console.log("NEW ", newUser);
     const reqBody = { ...newUser, created: Date.now() };
     await addUser(reqBody);
     setNewUser(initUser);

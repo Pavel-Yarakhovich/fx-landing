@@ -9,8 +9,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaArrowCircleDown } from "react-icons/fa";
-import Steps from './steps';
-import ContactForm from './form';
+import Steps from "./steps";
+import ContactForm from "./form";
 
 function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
   return (

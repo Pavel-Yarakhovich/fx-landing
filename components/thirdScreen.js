@@ -1,6 +1,6 @@
 import React from "react";
-import { Container } from '@chakra-ui/react';
-import RobotDescription from './robotDescriptions';
+import { Container } from "@chakra-ui/react";
+import RobotDescription from "./robotDescriptions";
 
 const ThirdScreen = React.forwardRef((_, ref) => {
   return (
@@ -17,7 +17,6 @@ const ThirdScreen = React.forwardRef((_, ref) => {
   );
 });
 
-ThirdScreen.displayName = 'Third Screen';
+ThirdScreen.displayName = "Third Screen";
 
 export default ThirdScreen;
-
