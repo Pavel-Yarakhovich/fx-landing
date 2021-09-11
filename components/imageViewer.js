@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import { FiZoomIn } from "react-icons/fi";
-import { HiOutlineDocumentDownload } from 'react-icons/hi';
+import { HiOutlineDocumentDownload } from "react-icons/hi";
 
 function ImageViewer({ isOpen, onClose, image, urls, title, imageSubfolder }) {
   const [shownImage, setShownImage] = React.useState(null);
@@ -23,16 +23,21 @@ function ImageViewer({ isOpen, onClose, image, urls, title, imageSubfolder }) {
     if (isOpen) {
       setShownImage(urls.indexOf(image));
     }
-  }, [isOpen]);
+  }, [isOpen, urls, image]);
 
-  const handleArrowClick = React.useCallback((shift) => {
-    let newIdx = shownImage + shift;
-    if (newIdx < 0) newIdx = urls.length + newIdx;
-    if (newIdx > urls.length - 1) newIdx = urls.length % newIdx;
-    setShownImage(newIdx);
-  }, [shownImage, urls.length]);
+  const handleArrowClick = React.useCallback(
+    (shift) => {
+      let newIdx = shownImage + shift;
+      if (newIdx < 0) newIdx = urls.length + newIdx;
+      if (newIdx > urls.length - 1) newIdx = urls.length % newIdx;
+      setShownImage(newIdx);
+    },
+    [shownImage, urls.length]
+  );
 
-  const pathToImg = `/images/${imageSubfolder ? `${imageSubfolder}/` : ''}${urls[shownImage]}`;
+  const pathToImg = `/images/${imageSubfolder ? `${imageSubfolder}/` : ""}${
+    urls[shownImage]
+  }`;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
@@ -41,9 +46,7 @@ function ImageViewer({ isOpen, onClose, image, urls, title, imageSubfolder }) {
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {shownImage !== null && (
-            <Image src={pathToImg} alt="Image Preview" />
-          )}
+          {shownImage !== null && <Image src={pathToImg} alt="Image Preview" />}
         </ModalBody>
         <ModalFooter
           display="flex"
@@ -54,13 +57,24 @@ function ImageViewer({ isOpen, onClose, image, urls, title, imageSubfolder }) {
           <Button onClick={() => handleArrowClick(-1)}>
             <BiLeftArrow size="30px" color="green.500" />
           </Button>
-          <Link isExternal href={pathToImg} target="_blank" rel="noopener noreferrer">
+          <Link
+            isExternal
+            href={pathToImg}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button>
               <FiZoomIn size="30px" color="green.500" />
               <Text display={["none", "block"]}>Смотреть крупнее</Text>
             </Button>
           </Link>
-          <Link isExternal href={pathToImg} target="_blank" rel="noopener noreferrer" download>
+          <Link
+            isExternal
+            href={pathToImg}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+          >
             <Button>
               <HiOutlineDocumentDownload size="30px" color="green.500" />
               <Text display={["none", "block"]}>Сохранить</Text>

@@ -1,6 +1,6 @@
-import { Container, Flex, Box, Alert, AlertIcon } from '@chakra-ui/react';
-import Steps from './steps';
-import ContactForm from './form';
+import { Container, Flex, Box, Alert, AlertIcon } from "@chakra-ui/react";
+import Steps from "./steps";
+import ContactForm from "./form";
 
 function FourthScreen({ addUserHandler, addUserResponse }) {
   return (
@@ -22,9 +22,9 @@ function FourthScreen({ addUserHandler, addUserResponse }) {
         <Box w={["100%", "50%", null, "30%"]}>
           {addUserResponse && (
             <Alert
-                status={addUserResponse.error ? "error" : "success"}
-                borderRadius="12px"
-                mb="12px"
+              status={addUserResponse.error ? "error" : "success"}
+              borderRadius="12px"
+              mb="12px"
             >
               <AlertIcon />
               {addUserResponse.message}
