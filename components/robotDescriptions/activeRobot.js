@@ -12,6 +12,8 @@ import {
 } from "@chakra-ui/react";
 import ImageViewer from "../imageViewer";
 import { GiClick } from "react-icons/gi";
+import { useAppState } from "../../stores/AppStore";
+import { MdBookmarkBorder, MdBookmark } from "react-icons/md";
 
 const Images = ({ title, imagesArr, robotTitle, imageSubfolder }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,7 +61,7 @@ const Images = ({ title, imagesArr, robotTitle, imageSubfolder }) => {
         {imagesArr.map((d) => (
           <Image
             key={d}
-            src={`/images/${imageSubfolder ? `${imageSubfolder}/` : ''}${d}`}
+            src={`/images/${imageSubfolder ? `${imageSubfolder}/` : ""}${d}`}
             alt={robotTitle}
             w={["100%", "60%", "35%"]}
             height="200px"
@@ -87,6 +89,24 @@ const Images = ({ title, imagesArr, robotTitle, imageSubfolder }) => {
 };
 
 const ActiveRobot = React.forwardRef(({ robot }, ref) => {
+  // App state
+  const { AppState, AppStateDispatch } = useAppState();
+  const { selectedRobots } = AppState;
+
+  const toggleRobot = React.useCallback(
+    (e, robot) => {
+      e.stopPropagation();
+      const wasSelected = selectedRobots.includes(robot);
+      AppStateDispatch({
+        type: "setSelectedRobots",
+        payload: wasSelected
+          ? selectedRobots.filter((r) => r !== robot)
+          : [...selectedRobots, robot],
+      });
+    },
+    [AppStateDispatch, selectedRobots]
+  );
+
   return (
     <>
       <Box w="100%" p={[0, 1, 2]} mb="30px" ref={ref}>
@@ -95,14 +115,49 @@ const ActiveRobot = React.forwardRef(({ robot }, ref) => {
           alignItems="flex-start"
           flexDirection={["column", null, "row"]}
         >
-          <Image
-            src={robot.image ? `/images/robots/${robot.image}` : "/images/scalper.png"}
-            fallbackSrc="/images/fallback.png"
-            alt={robot.title}
+          <Flex
             w={["100%", "60%", "35%"]}
+            flexDirection="column"
+            alignItems="center"
             flexShrink="0"
-            height="auto"
-          />
+          >
+            <Image
+              src={
+                robot.image
+                  ? `/images/robots/${robot.image}`
+                  : "/images/scalper.png"
+              }
+              fallbackSrc="/images/fallback.png"
+              alt={robot.title}
+              w={"100%"}
+              flexShrink="0"
+              height="auto"
+              marginBottom="10px"
+            />
+            <Box
+              onClick={(e) => toggleRobot(e, robot.title)}
+              color="green.500"
+              cursor="pointer"
+              display="flex"
+              alignItems="center"
+            >
+              {selectedRobots.includes(robot.title) ? (
+                <MdBookmark fontSize="26px" />
+              ) : (
+                <MdBookmarkBorder fontSize="26px" />
+              )}
+              <Text
+                fontStyle="italic"
+                color="#1a202c"
+                fontFamily="FuturaLight"
+                fontWeight="300"
+              >
+                {selectedRobots.includes(robot.title)
+                  ? " - робот находится в списке избранных"
+                  : " - добавить в список избранных"}
+              </Text>
+            </Box>
+          </Flex>
 
           <Box p={[1, 2, 6]}>
             <Text fontSize="3xl" fontWeight="700" mb={3}>

@@ -1,7 +1,29 @@
 import { Box, Image, Badge } from "@chakra-ui/react";
 import React from "react";
 
+import { MdBookmarkBorder, MdBookmark } from "react-icons/md";
+
+import { useAppState } from "../../stores/AppStore";
+
 function RobotItem({ robot, handleClick }) {
+  // App state
+  const { AppState, AppStateDispatch } = useAppState();
+  const { selectedRobots } = AppState;
+
+  const toggleRobot = React.useCallback(
+    (e, robot) => {
+      e.stopPropagation();
+      const wasSelected = selectedRobots.includes(robot);
+      AppStateDispatch({
+        type: "setSelectedRobots",
+        payload: wasSelected
+          ? selectedRobots.filter((r) => r !== robot)
+          : [...selectedRobots, robot],
+      });
+    },
+    [AppStateDispatch, selectedRobots]
+  );
+
   return (
     <Box
       w={["100%", "50%", "33%", "25%"]}
@@ -9,6 +31,7 @@ function RobotItem({ robot, handleClick }) {
       onClick={() => handleClick(robot)}
     >
       <Box
+        position="relative"
         bg="white"
         maxW="sm"
         borderWidth="1px"
@@ -24,6 +47,20 @@ function RobotItem({ robot, handleClick }) {
           transition: "all 250ms ease",
         }}
       >
+        <Box
+          position="absolute"
+          top={1}
+          right={1}
+          onClick={(e) => toggleRobot(e, robot.title)}
+          color="green.500"
+          cursor="pointer"
+        >
+          {selectedRobots.includes(robot.title) ? (
+            <MdBookmark fontSize="26px" />
+          ) : (
+            <MdBookmarkBorder fontSize="26px" />
+          )}
+        </Box>
         <Image
           src={
             robot.image
