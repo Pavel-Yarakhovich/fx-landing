@@ -5,7 +5,7 @@ import { FaArrowCircleDown } from "react-icons/fa";
 import Offer from "./list";
 import RobotsList from "./robots";
 
-const SecondScreen = React.forwardRef(({ handleNextScreen }, ref) => {
+const SecondScreen = React.forwardRef(({ handleNextScreen, robots }, ref) => {
   return (
     <Container
       maxW="container.xl"
@@ -25,11 +25,11 @@ const SecondScreen = React.forwardRef(({ handleNextScreen }, ref) => {
         justifyContent="space-between"
         flexDirection={["column", null, null, "row"]}
       >
-        <Box w={["100%", null, null, "55%"]} ml="1rem">
+        <Box w={["100%", null, null, "55%"]}>
           <Offer />
         </Box>
         <Box w={["100%", null, null, "45%"]}>
-          <RobotsList />
+          <RobotsList robots={robots} />
         </Box>
       </Flex>
       <Button
@@ -55,6 +55,6 @@ const SecondScreen = React.forwardRef(({ handleNextScreen }, ref) => {
   );
 });
 
-SecondScreen.displayName = 'Second Screen';
+SecondScreen.displayName = "Second Screen";
 
 export default SecondScreen;

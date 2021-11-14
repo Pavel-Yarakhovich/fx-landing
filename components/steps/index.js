@@ -11,11 +11,11 @@ import { MdCheckCircle } from "react-icons/md";
 
 const BROKER_LINK = "https://nmaffru.com/z1iuz5b2wg80";
 
-function Steps() {
+function Steps({ relatedFormRef }) {
   return (
     <Stack mb={[5, null]}>
       <Text fontSize="3xl" fontWeight="700">
-        З простых шага:
+        З шага:
       </Text>
       <List fontFamily="FuturaLight" fontSize="xl">
         <ListItem>
@@ -40,8 +40,22 @@ function Steps() {
         </ListItem>
         <ListItem>
           <ListIcon as={MdCheckCircle} color="green.500" />
-          Напиши своё имя, е-мейл, номер счета и список желаемых роботов в форму
-          обратной связи
+          Напиши своё имя, е-мейл, номер счета и список желаемых роботов в{" "}
+          <Text
+            onClick={() => {
+              relatedFormRef?.current?.focus();
+              relatedFormRef?.current?.scrollIntoView({
+                block: "center",
+                behavior: "smooth",
+              });
+            }}
+            color="#008000"
+            fontWeight="700"
+            display="inline"
+            cursor="pointer"
+          >
+            форму обратной связи
+          </Text>
         </ListItem>
       </List>
       <Link

@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import loadable from "@loadable/component";
 
 import Pixel from "../components/Pixel";
+import AppStore from "../stores/AppStore";
 
 const FirstScreen = loadable(() => import("../components/firstScreen"), {
   fallback: (
@@ -68,44 +69,44 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <Pixel name="FACEBOOK_PIXEL" />
-      <Head>
-        <title>Уникальная возможность!</title>
-        <meta
-          name="description"
-          content="Получи 10 торговых роботов общей стоимостью 20000$. БЕСПЛАТНО!"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <AppStore>
+      <div>
+        <Pixel name="FACEBOOK_PIXEL" />
+        <Head>
+          <title>Уникальная возможность!</title>
+          <meta
+            name="description"
+            content="Получи 10 торговых роботов общей стоимостью 20000$. БЕСПЛАТНО!"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <header className={styles.header} ref={setRefs}>
-        <Expiration />
-      </header>
-      <div className={styles.underlay} />
-      <main className={styles.main}>
-        <FirstScreen
-          addUserHandler={addUserHandler}
-          handleNextScreen={() => showScreen(secondScreenRef)}
-          addUserResponse={addUserResponse}
-        />
+        <header className={styles.header} ref={setRefs}>
+          {/* <Expiration /> */}
+        </header>
+        <div className={styles.underlay} />
+        <main className={styles.main}>
+          <FirstScreen
+            addUserHandler={addUserHandler}
+            handleNextScreen={() => showScreen(secondScreenRef)}
+            addUserResponse={addUserResponse}
+          />
 
-        <SecondScreen
-          handleNextScreen={() => showScreen(thirdScreenRef)}
-          ref={secondScreenRef}
-        />
-        <ThirdScreen ref={thirdScreenRef} />
-        <FourthScreen
-          addUserHandler={addUserHandler}
-          addUserResponse={addUserResponse}
-        />
+          <SecondScreen
+            handleNextScreen={() => showScreen(thirdScreenRef)}
+            ref={secondScreenRef}
+          />
+          <ThirdScreen ref={thirdScreenRef} />
+          <FourthScreen
+            addUserHandler={addUserHandler}
+            addUserResponse={addUserResponse}
+          />
 
-        <ToTopButton show={!inView} handleClick={scrollToTop} />
-      </main>
+          <ToTopButton show={!inView} handleClick={scrollToTop} />
+        </main>
 
-      <footer className={styles.footer}>
-        <Expiration />
-      </footer>
-    </div>
+        <footer className={styles.footer}>{/* <Expiration /> */}</footer>
+      </div>
+    </AppStore>
   );
 }

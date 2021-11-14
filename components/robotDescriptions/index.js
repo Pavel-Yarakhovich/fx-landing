@@ -3,10 +3,14 @@ import { Text, Flex } from "@chakra-ui/react";
 import Robot from "./robot";
 import ActiveRobot from "./activeRobot";
 
-import { robotDescription } from "../../robot-descriptions";
+import { useAppState } from "../../stores/AppStore";
 
 function RobotDesc() {
-  const [activeRobot, setActiveRobot] = React.useState(robotDescription[0]);
+  // App state
+  const { AppState, AppStateDispatch } = useAppState();
+  const { robots } = AppState;
+
+  const [activeRobot, setActiveRobot] = React.useState(robots[0]);
   const activeRobotRef = React.useRef(null);
 
   const handleClickRobot = React.useCallback((robot) => {
@@ -32,7 +36,7 @@ function RobotDesc() {
       </Text>
       <ActiveRobot robot={activeRobot} ref={activeRobotRef} />
       <Flex flexDirection="row" flexWrap="wrap">
-        {robotDescription.map((r, idx) => (
+        {robots.map((r, idx) => (
           <Robot key={idx} robot={r} handleClick={handleClickRobot} />
         ))}
       </Flex>

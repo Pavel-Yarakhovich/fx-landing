@@ -1,5 +1,5 @@
 import { Text, List, ListItem, Stack, ListIcon } from "@chakra-ui/react";
-import { SiAbbrobotstudio } from 'react-icons/si';
+import { SiAbbrobotstudio } from "react-icons/si";
 
 const OFFER = [
   { sum: 20000, qty: "10 роботов" },
@@ -20,13 +20,28 @@ function Offer() {
       <Text fontSize="3xl" fontWeight="700" textAlign="center">
         Количество предоставляемых роботов:
       </Text>
-      <List textAlign="center" fontFamily="FuturaLight" fontSize="xl">
+      <List
+        textAlign="center"
+        fontFamily="FuturaLight"
+        fontSize="xl"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        margin="0px"
+      >
         {OFFER.map((of, idx) => (
-          <ListItem key={idx}>
+          <ListItem
+            key={idx}
+            border="1px solid gray"
+            borderRadius="4px"
+            margin="2px 0"
+            padding="4px"
+            width={["100%", "70%"]}
+          >
             <ListIcon as={SiAbbrobotstudio} color="green.500" />
-            При депозите от {of.sum}$ - {of.qty}
+            При депозите от ${of.sum} - {of.qty}
           </ListItem>
-        ))}
+        )).reverse()}
       </List>
     </Stack>
   );

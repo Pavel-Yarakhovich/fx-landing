@@ -14,7 +14,12 @@ function RobotItem({ robot, handleClick }) {
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
-        pt={5}
+        pt={2}
+        background={`url(${
+          robot?.image ? `/images/robots/${robot.image}` : "/images/scalper.png"
+        })`}
+        objectPosition="center"
+        objectFit="cover"
         _hover={{
           cursor: "pointer",
           boxShadow:
@@ -23,14 +28,18 @@ function RobotItem({ robot, handleClick }) {
         }}
       >
         <Image
-          src={robot.image ? `/images/robots/${robot.image}` : "/images/scalper.png"}
+          src={
+            robot.image
+              ? `/images/robots/${robot.image}`
+              : "/images/scalper.png"
+          }
           fallbackSrc="/images/fallback.png"
           alt={robot.title}
-          maxHeight="250px"
+          maxHeight="210px"
           margin="auto"
         />
 
-        <Box p="6">
+        <Box p="3">
           <Box
             mt="1"
             fontWeight="semibold"

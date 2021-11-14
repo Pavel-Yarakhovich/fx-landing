@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   Stack,
   Input,
@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { robotDescription } from "../../robot-descriptions";
+import { useAppState } from "../../stores/AppStore";
 
 // Helpers
 import { validateCountNumber } from "../../utils";
@@ -27,12 +27,24 @@ const ERRORS = {
   wrongPartnerCode: "Данный торговый счёт не найден в нашей партнерской сети.",
 };
 
-function ContactForm({ addUser }) {
+const ContactForm = forwardRef(({ addUser }, ref) => {
+  //App state
+  const { AppState, AppStateDispatch } = useAppState();
+  const { robots, selectedRobots } = AppState;
+
   const [isRegistering, setRegistering] = React.useState(false);
   const [newUser, setNewUser] = React.useState(initUser);
   const [errors, setErrors] = React.useState(initUser);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [adminPswd, setAdminPswd] = React.useState("");
+  const [isFocused, setIsFocused] = React.useState(false);
+
+  React.useEffect(() => {
+    setNewUser((prev) => ({
+      ...prev,
+      selectedRobots,
+    }));
+  }, [selectedRobots]);
 
   const changeUserData = React.useCallback(({ target: { name, value } }) => {
     setIsAdmin(name === "email" && value === ADMIN);
@@ -49,18 +61,18 @@ function ContactForm({ addUser }) {
   const handleCheckbox = React.useCallback(
     (robot) => {
       const wasSelected = newUser.selectedRobots.includes(robot);
-      setNewUser((prev) => ({
-        ...prev,
-        selectedRobots: wasSelected
-          ? prev.selectedRobots.filter((r) => r !== robot)
-          : [...prev.selectedRobots, robot],
-      }));
+      AppStateDispatch({
+        type: "setSelectedRobots",
+        payload: wasSelected
+          ? newUser.selectedRobots.filter((r) => r !== robot)
+          : [...newUser.selectedRobots, robot],
+      });
       setErrors((prev) => ({
         ...prev,
         selectedRobots: "",
       }));
     },
-    [newUser]
+    [newUser, AppStateDispatch]
   );
 
   const validateForm = React.useCallback(() => {
@@ -91,24 +103,42 @@ function ContactForm({ addUser }) {
     return isValid;
   }, [newUser]);
 
+  const resetForm = React.useCallback(() => {
+    setNewUser(initUser);
+    AppStateDispatch({
+      type: "setSelectedRobots",
+      payload: [],
+    });
+    setErrors(initUser);
+  }, [AppStateDispatch]);
+
   const register = React.useCallback(async () => {
-    if (!validateForm()) return;
+    const isFormDataValid = validateForm();
+    if (!isFormDataValid) return;
+
     setRegistering(true);
     const reqBody = { ...newUser, created: Date.now() };
     await addUser(reqBody);
-    setNewUser(initUser);
-    setErrors(initUser);
+    resetForm();
     setRegistering(false);
-  }, [newUser, addUser, validateForm]);
+  }, [newUser, addUser, validateForm, resetForm]);
 
   return (
     <Stack
+      tabIndex="100"
+      ref={ref}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       spacing={3}
-      boxShadow="0px 5px 6px rgba(0, 0, 0, 0.2), 0px 3px 16px rgba(0, 0, 0, 0.12),
-    0px 9px 12px rgba(0, 0, 0, 0.14)"
+      boxShadow={
+        isFocused
+          ? "0px 8px 14px rgba(30, 150, 94, 0.5), 0px 10px 20px rgba(222, 218, 0, 0.42), 0px 12px 16px rgba(30, 150, 94, 0.64)"
+          : "0px 5px 6px rgba(0, 0, 0, 0.2), 0px 3px 16px rgba(0, 0, 0, 0.12), 0px 9px 12px rgba(0, 0, 0, 0.14)"
+      }
       p={4}
       borderRadius="20px"
       backgroundColor="white"
+      outline="none"
     >
       <FormControl id="name" isRequired>
         <FormLabel>Имя</FormLabel>
@@ -203,7 +233,7 @@ function ContactForm({ addUser }) {
               flexWrap="wrap"
               justifyContent="flex-start"
             >
-              {robotDescription.map(({ title }) => (
+              {robots.map(({ title }) => (
                 <Checkbox
                   key={title}
                   size="md"
@@ -231,6 +261,8 @@ function ContactForm({ addUser }) {
       )}
     </Stack>
   );
-}
+});
+
+ContactForm.displayName = "Contact Form";
 
 export default ContactForm;

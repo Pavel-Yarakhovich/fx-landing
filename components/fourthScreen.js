@@ -2,7 +2,13 @@ import { Container, Flex, Box, Alert, AlertIcon } from "@chakra-ui/react";
 import Steps from "./steps";
 import ContactForm from "./form";
 
+import { useAppState } from "../stores/AppStore";
+
 function FourthScreen({ addUserHandler, addUserResponse }) {
+  // App state
+  const { AppState, AppStateDispatch } = useAppState();
+  const { bottomFormRef } = AppState;
+
   return (
     <Container
       maxW="container.xl"
@@ -17,7 +23,7 @@ function FourthScreen({ addUserHandler, addUserResponse }) {
         flexDirection={["column", null, null, "row"]}
       >
         <Box w={["100%", null, null, "60%"]}>
-          <Steps />
+          <Steps relatedFormRef={bottomFormRef} />
         </Box>
         <Box w={["100%", "50%", null, "30%"]}>
           {addUserResponse && (
@@ -30,7 +36,7 @@ function FourthScreen({ addUserHandler, addUserResponse }) {
               {addUserResponse.message}
             </Alert>
           )}
-          <ContactForm addUser={addUserHandler} />
+          <ContactForm addUser={addUserHandler} ref={bottomFormRef} />
         </Box>
       </Flex>
     </Container>

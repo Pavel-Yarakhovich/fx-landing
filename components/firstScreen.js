@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Container,
   Box,
@@ -11,8 +12,21 @@ import {
 import { FaArrowCircleDown } from "react-icons/fa";
 import Steps from "./steps";
 import ContactForm from "./form";
+import { useAppState } from "../stores/AppStore";
+import { robotDescription } from "../robot-descriptions";
 
 function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
+  // App state
+  const { AppState, AppStateDispatch } = useAppState();
+  const { upperFormRef } = AppState;
+
+  React.useEffect(() => {
+    AppStateDispatch({
+      type: "setRobots",
+      payload: robotDescription,
+    });
+  }, [AppStateDispatch]);
+
   return (
     <Container
       maxW="container.xl"
@@ -49,9 +63,9 @@ function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
           >
             Бесплатно!
           </Text>
-          <Text fontSize={["2xl", null, "4xl"]} textAlign="center">
+          {/* <Text fontSize={["2xl", null, "4xl"]} textAlign="center">
             Заработай от 100$ уже сегодня, просто установив один из роботов.
-          </Text>
+          </Text> */}
         </Stack>
 
         <Flex
@@ -62,7 +76,7 @@ function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
           flexDirection={["column", null, null, "row"]}
         >
           <Box w={["100%", null, null, "60%"]}>
-            <Steps />
+            <Steps relatedFormRef={upperFormRef} />
           </Box>
           <Box w={["100%", "50%", null, "30%"]}>
             {addUserResponse && (
@@ -75,7 +89,7 @@ function FirstScreen({ addUserHandler, handleNextScreen, addUserResponse }) {
                 {addUserResponse.message}
               </Alert>
             )}
-            <ContactForm addUser={addUserHandler} />
+            <ContactForm addUser={addUserHandler} ref={upperFormRef} />
           </Box>
         </Flex>
         <Button
