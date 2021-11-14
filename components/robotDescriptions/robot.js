@@ -15,9 +15,6 @@ function RobotItem({ robot, handleClick }) {
         borderRadius="lg"
         overflow="hidden"
         pt={2}
-        background={`url(${
-          robot?.image ? `/images/robots/${robot.image}` : "/images/scalper.png"
-        })`}
         objectPosition="center"
         objectFit="cover"
         _hover={{
